@@ -1,0 +1,50 @@
+# This is Git's per-user configuration file.
+[user]
+    name = 0xjc
+    email = 5281913+0xjc@users.noreply.github.com
+[core]
+    editor = vim
+[push]
+    default = current
+    autoSetupRemote = true
+[pull]
+    ff = only
+    rebase = false
+[fetch]
+    prune = true
+[rebase]
+    autoSquash = true
+[stash]
+    showPatch = true
+[alias]
+    st = status
+    rph = rev-parse HEAD
+    rpsh = rev-parse --short HEAD
+    ch = checkout
+    cm = commit
+    cp = cherry-pick
+    amend = commit --amend --reset-author
+    pushf = push --force-with-lease
+    rhu = reset --hard @{u}
+    diffs = diff --staged
+    stl = stash list
+    stpush = stash push
+    stpop = stash pop
+    stapply = stash apply
+    stshow = stash show
+    lg = log --graph --all --abbrev-commit --decorate --format=format:'%C(bold blue)%h %C(yellow)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)(%an)%C(reset)%C(auto)%d%C(reset)'
+    lgfp = lg --first-parent
+    bsu = "!r() { if [ -z \"$1\" ]; then br=$(git rev-parse --abbrev-ref HEAD); else br=$1; fi; git branch --set-upstream-to=origin/$br $br; }; r"
+    fm = "!r() { if [ -z \"$1\" ]; then main=$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-); else main=$1; fi; git fetch origin $main:$main; }; r"
+    chm = "!r() { if [ -z \"$1\" ]; then main=$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-); else main=$1; fi; git checkout -q --detach HEAD; git fetch origin $main:$main; git checkout -q $main; }; r"
+    rb1 = "!r() { if [ -z \"$1\" ]; then main=$(git rev-parse --abbrev-ref origin/HEAD | cut -c8-); else main=$1; fi; git rebase --onto $main HEAD~ $(git rev-parse --abbrev-ref HEAD); }; r"
+    lsr = "!r() { git for-each-ref --sort=-committerdate --count=${1-10} refs/heads --format='%(color:bold blue)%(objectname:short)|%(color:white)%(HEAD)%(color:green)%(refname:short)|%(color:yellow)%(committerdate:relative)|%(color:white)%(subject)|%(color:dim white)%(authorname)%(color:reset)' --color=always | awk '{print NR \"|\" $s}' | column -ts'|'; }; r"
+    chr = "!r() { if [ -z \"$1\" ]; then git lsr; else count=\"$1\"; shift; git checkout $(git for-each-ref --sort=-committerdate --count=\"$count\" refs/heads --format='%(refname:short)' | tail -n1) \"$@\"; fi }; r"
+[init]
+    defaultBranch = main
+[credential "https://github.com"]
+    helper = 
+    helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+    helper = 
+    helper = !/usr/bin/gh auth git-credential
